@@ -1,0 +1,16 @@
+{
+  "name": "redux-core",
+  "version": "1.0.0",
+  "description": "\"Redux Core Project: Streamline state management with Redux. Centralize and manage application state efficiently for enhanced scalability and predictability.\"",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "redux": "^5.0.1"
+  }
+}
