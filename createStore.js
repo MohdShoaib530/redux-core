@@ -1,10 +1,11 @@
-import { createStore,bindActionCreators } from "redux";
+import { createStore,bindActionCreators,combineReducers } from "redux";
 
 const Add_Todo = 'add_todo';
 const Del_Todo = 'delete_todo';
 const Update_Todo = 'update_todo';
+const Add_User = 'add_user';
 
-function todoReducer(state, action) {
+function todoReducer(state = [], action) {
     if (action.type == Add_Todo) {
       const todoText = action.payload.todoText;
       return [
@@ -29,16 +30,36 @@ function todoReducer(state, action) {
       });
     }
     return state;
+};
+
+function userReducer(state = [], action) {
+  if (action.type === Add_User) {
+    const userName = action.payload.userName;
+    return [
+      ...state,
+      {
+        name: userName, // Use the provided userName
+        id: state.length === 0 ? 1 : state[state.length - 1].id + 1,
+      },
+    ];
   }
+  // Make sure to return the state in the else block
+  return state;
+}
+
   
 // action creator
-const addTodo = (todoText) =>  ({type:Add_Todo, payload: {todoText} });
-const deleteTodo = (id) => ({type:Del_Todo, payload: {id: id}})
+const addTodo = (todoText) =>  ({type: Add_Todo, payload: {todoText} });
+const deleteTodo = (id) => ({type: Del_Todo, payload: {id: id}});
+const addUser = (userName ) => ({type: Add_User, payload: {userName}});
 
-const {dispatch,getState,subscribe,replaceReducer} = createStore(todoReducer,[]);
+const reducer = combineReducers({todo: todoReducer, user: userReducer});
+
+const {dispatch,getState,subscribe,replaceReducer} = createStore(reducer);
+
+const actions = bindActionCreators({addTodo,deleteTodo, addUser}, dispatch)
 subscribe(() => console.log(getState()))
-
-const actions = bindActionCreators({addTodo,deleteTodo}, dispatch)
 actions.addTodo('todo-1');
 actions.addTodo('todo-2');
-actions.deleteTodo(1)
+actions.deleteTodo(1);
+actions.addUser('shoaib')
